@@ -1,10 +1,7 @@
 package com.wushiyii.servlet;
 
 import com.alibaba.fastjson.JSON;
-import com.wushiyii.annotation.DELETE;
-import com.wushiyii.annotation.GET;
-import com.wushiyii.annotation.POST;
-import com.wushiyii.annotation.PUT;
+import com.wushiyii.annotation.*;
 import com.wushiyii.config.MyMVCConfiguration;
 import com.wushiyii.dispatch.EndpointManager;
 import com.wushiyii.dispatch.EndpointMetaInfo;
@@ -20,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.Objects;
-import java.util.Set;
+import java.lang.reflect.Parameter;
+import java.util.*;
 
 /**
  * @Author: wgq
@@ -111,12 +108,57 @@ public class MyMVCServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         try {
-            Object result = endpoint.getMethod().invoke(endpoint.getEndpointObject());
+            List<Object> parameters = getReflectParameters(endpoint, getRequestMap(req));
+            Object result;
+            if (parameters.size() > 0) {
+                result = endpoint.getMethod().invoke(endpoint.getEndpointObject(), parameters.toArray());
+            } else {
+                result = endpoint.getMethod().invoke(endpoint.getEndpointObject());
+            }
             writer.write(JSON.toJSONString(result));
             writer.flush();
         } catch (Exception e) {
             log.error("invoke method error, method={}", endpoint.getMethod(), e);
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private List<Object> getReflectParameters(EndpointMetaInfo endpoint, Map<String, String> requestMap) {
+
+        if (Objects.isNull(requestMap) || requestMap.size() == 0 || endpoint.getMethod().getParameters().length == 0) {
+            return Collections.emptyList();
+        }
+
+        Parameter[] parameters = endpoint.getMethod().getParameters();
+        Class<?>[] parameterTypes = endpoint.getMethod().getParameterTypes();
+        List<Object> objectList = new ArrayList<>();
+
+        for (int i = 0; i < parameters.length; i++) {
+            Parameter param = parameters[i];
+            Class<?> type = parameterTypes[i];
+
+            Param pinedParam = param.getAnnotation(Param.class);
+
+            if (requestMap.containsKey(pinedParam.value())) {
+                objectList.add(ClassUtil.generateParameterObject(type, requestMap.get(pinedParam.value())));
+            } else {
+                objectList.add(ClassUtil.generateDefaultObject(type));
+            }
+        }
+
+
+        return objectList;
+    }
+
+
+    private Map<String, String> getRequestMap(HttpServletRequest request) {
+        Map<String, String> paramMap = new HashMap<>();
+
+        request.getParameterMap().forEach((paramName, paramsValues) -> {
+            if (Objects.nonNull(paramsValues)) {
+                paramMap.put(paramName, paramsValues[0]);
+            }
+        });
+        return paramMap;
     }
 }

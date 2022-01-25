@@ -1,6 +1,7 @@
 package com.wushiyii.controller;
 
 import com.wushiyii.annotation.GET;
+import com.wushiyii.annotation.Param;
 
 /**
  * @Author: wgq
@@ -9,7 +10,7 @@ import com.wushiyii.annotation.GET;
 public class TestController {
 
     @GET(path = "/hello")
-    public String hello() {
-        return "hi:";
+    public String hello(@Param("name") String name, @Param("age") String age) {
+        return "hi:" + name + ",age:" + age;
     }
 }

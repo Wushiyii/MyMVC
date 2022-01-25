@@ -9,18 +9,18 @@ import lombok.Getter;
  * @Date: 2022/1/24 11:26
  */
 @Getter
-public class MVCBuilder {
+public class MyMVCBuilder {
 
-    public static MVCBuilder of() {
-        return new MVCBuilder();
+    public static MyMVCBuilder of() {
+        return new MyMVCBuilder();
     }
 
-    public MVCBuilder port(int port) {
+    public MyMVCBuilder port(int port) {
         MyMVCConfiguration.setPort(port);
         return this;
     }
 
-    public MVCBuilder contextPath(String contextPath) {
+    public MyMVCBuilder contextPath(String contextPath) {
         MyMVCConfiguration.setContextPath(contextPath);
         return this;
     }
