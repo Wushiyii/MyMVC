@@ -1,6 +1,5 @@
 package com.wushiyii.handler.impl;
 
-import com.wushiyii.handler.RequestContext;
 import com.wushiyii.handler.RequestHandler;
 
 /**
@@ -9,8 +8,4 @@ import com.wushiyii.handler.RequestHandler;
  */
 public class PutRequestHandler implements RequestHandler {
 
-    @Override
-    public Object handleRequest(RequestContext context) {
-        return null;
-    }
 }

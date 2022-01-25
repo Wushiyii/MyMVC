@@ -1,6 +1,9 @@
 package com.wushiyii.handler;
 
 import com.alibaba.fastjson.JSON;
+import com.wushiyii.dispatch.EndpointExecutor;
+import com.wushiyii.dispatch.EndpointManager;
+import com.wushiyii.dispatch.EndpointMetaInfo;
 import com.wushiyii.utils.ParamUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +39,7 @@ public interface RequestHandler {
      * 解析入参，默认parameterMap格式获取
      * @param context context
      */
-    default Map<String, String > parseParam(RequestContext context) {
+    default Map<String, String > parseParam(RequestContext context) throws Exception {
         return ParamUtils.handleParameterMap(context.getReq());
     }
 
@@ -46,7 +49,11 @@ public interface RequestHandler {
      * @return 业务返回值
      * @throws Exception ex
      */
-    Object handleRequest(RequestContext context) throws Exception;
+    default Object handleRequest(RequestContext context) throws Exception {
+        EndpointMetaInfo endpoint = EndpointManager.getEndpoint(context.getMethod(), context.getPath());
+
+        return EndpointExecutor.invokeEndpoint(endpoint, context.getParamMap());
+    }
 
     /**
      * 处理返回值, 默认JSON序列化
