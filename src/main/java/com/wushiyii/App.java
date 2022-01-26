@@ -10,6 +10,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        MyMVCBuilder.of().port(8080).contextPath("").start(App.class);
+        MyMVCBuilder.of().start(App.class);
     }
 }

@@ -39,7 +39,7 @@ public class MyEmbedServer implements EmbedServer {
             WebResourceRoot webResourceRoot = new StandardRoot(standardContext);
             standardContext.setResources(webResourceRoot);
 
-            this.tomcat.addServlet("", "myMVCServlet", new MyMVCServlet()).setLoadOnStartup(0);
+            this.tomcat.addServlet(contextPath, "myMVCServlet", new MyMVCServlet()).setLoadOnStartup(0);
 
             standardContext.addServletMappingDecoded("/*", "myMVCServlet");
 

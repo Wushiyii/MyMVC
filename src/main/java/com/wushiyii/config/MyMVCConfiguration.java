@@ -1,5 +1,7 @@
 package com.wushiyii.config;
 
+import java.util.Objects;
+
 /**
  * @Author: wgq
  * @Date: 2022/1/24 15:11
@@ -30,6 +32,12 @@ public class MyMVCConfiguration {
     }
 
     public static void setContextPath(String contextPath) {
+        if (Objects.isNull(contextPath)) {
+            return;
+        }
+        if (!contextPath.startsWith("/")) {
+            contextPath = "/" + contextPath;
+        }
         MyMVCConfiguration.contextPath = contextPath;
     }
 
