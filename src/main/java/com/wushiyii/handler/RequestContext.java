@@ -28,7 +28,7 @@ public class RequestContext {
 
     private String path;
 
-    private Map<String, String> paramMap;
+    private Map<String, Object> paramMap;
 
     private Object originResult;
 

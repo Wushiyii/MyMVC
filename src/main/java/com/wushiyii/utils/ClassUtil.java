@@ -110,31 +110,34 @@ public final class ClassUtil {
      * @param value 值
      * @return 转换后的Object
      */
-    public static Object generateParameterObject(Class<?> type, String value) {
+    public static Object generateParameterObject(Class<?> type, Object value) {
         if (isPrimitive(type)) {
-            if (Objects.isNull(value) || "".equals(value)) {
+            if (Objects.isNull(value)) {
                 return generateDefaultObject(type);
             }
+            String strValue = (String) value;
 
             if (type.equals(int.class) || type.equals(Integer.class)) {
-                return Integer.parseInt(value);
+                return Integer.parseInt(strValue);
             } else if (type.equals(String.class)) {
-                return value;
+                return strValue;
             } else if (type.equals(Double.class) || type.equals(double.class)) {
-                return Double.parseDouble(value);
+                return Double.parseDouble(strValue);
             } else if (type.equals(Float.class) || type.equals(float.class)) {
-                return Float.parseFloat(value);
+                return Float.parseFloat(strValue);
             } else if (type.equals(Long.class) || type.equals(long.class)) {
-                return Long.parseLong(value);
+                return Long.parseLong(strValue);
             } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
-                return Boolean.parseBoolean(value);
+                return Boolean.parseBoolean(strValue);
             } else if (type.equals(Short.class) || type.equals(short.class)) {
-                return Short.parseShort(value);
+                return Short.parseShort(strValue);
             } else if (type.equals(Byte.class) || type.equals(byte.class)) {
-                return Byte.parseByte(value);
+                return Byte.parseByte(strValue);
             }
             return value;
 
+        } else if (isFile(type)) {
+            return value;
         } else {
             throw new RuntimeException("不支持的解析映射类型, type=" + type + ",value=" + value);
         }
@@ -183,5 +186,9 @@ public final class ClassUtil {
                 || type == Byte.class
                 || type == char.class
                 || type == Character.class;
+    }
+
+    public static boolean isFile(Class<?> type) {
+        return type == File.class;
     }
 }

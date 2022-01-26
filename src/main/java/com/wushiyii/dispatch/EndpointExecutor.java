@@ -17,7 +17,7 @@ public class EndpointExecutor {
 
 
     @SneakyThrows
-    public static Object invokeEndpoint(EndpointMetaInfo endpoint, Map<String, String> paramMap) {
+    public static Object invokeEndpoint(EndpointMetaInfo endpoint, Map<String, Object> paramMap) {
 
 
         List<Object> parameters = getReflectParameters(endpoint, paramMap);
@@ -30,9 +30,9 @@ public class EndpointExecutor {
         return result;
     }
 
-    public static List<Object> getReflectParameters(EndpointMetaInfo endpoint, Map<String, String> requestMap) {
+    public static List<Object> getReflectParameters(EndpointMetaInfo endpoint, Map<String, Object> requestMap) {
 
-        if (Objects.isNull(requestMap) || requestMap.size() == 0 || endpoint.getMethod().getParameters().length == 0) {
+        if (endpoint.getMethod().getParameters().length == 0) {
             return Collections.emptyList();
         }
 

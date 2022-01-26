@@ -39,7 +39,7 @@ public interface RequestHandler {
      * 解析入参，默认parameterMap格式获取
      * @param context context
      */
-    default Map<String, String > parseParam(RequestContext context) throws Exception {
+    default Map<String, Object> parseParam(RequestContext context) throws Exception {
         return ParamUtils.handleParameterMap(context.getReq());
     }
 

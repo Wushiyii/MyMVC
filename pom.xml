@@ -58,7 +58,7 @@
       <version>${fastjson.version}</version>
     </dependency>
 
-    <!--  guava-->
+    <!-- guava-->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
