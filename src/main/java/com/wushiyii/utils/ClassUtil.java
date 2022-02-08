@@ -1,5 +1,6 @@
 package com.wushiyii.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -178,29 +179,35 @@ public final class ClassUtil {
 
 
     private static Object getTypeMatchedObject(Class<?> type, Object value) {
-        if (isPrimitive(type)) {
-            String strValue = (String) value;
+        try {
+            if (isPrimitive(type)) {
+                String strValue = (String) value;
 
-            if (type.equals(int.class) || type.equals(Integer.class)) {
-                return Integer.parseInt(strValue);
-            } else if (type.equals(String.class)) {
-                return strValue;
-            } else if (type.equals(Double.class) || type.equals(double.class)) {
-                return Double.parseDouble(strValue);
-            } else if (type.equals(Float.class) || type.equals(float.class)) {
-                return Float.parseFloat(strValue);
-            } else if (type.equals(Long.class) || type.equals(long.class)) {
-                return Long.parseLong(strValue);
-            } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
-                return Boolean.parseBoolean(strValue);
-            } else if (type.equals(Short.class) || type.equals(short.class)) {
-                return Short.parseShort(strValue);
-            } else if (type.equals(Byte.class) || type.equals(byte.class)) {
-                return Byte.parseByte(strValue);
+                if (type.equals(int.class) || type.equals(Integer.class)) {
+                    return Integer.parseInt(strValue);
+                } else if (type.equals(String.class)) {
+                    return strValue;
+                } else if (type.equals(Double.class) || type.equals(double.class)) {
+                    return Double.parseDouble(strValue);
+                } else if (type.equals(Float.class) || type.equals(float.class)) {
+                    return Float.parseFloat(strValue);
+                } else if (type.equals(Long.class) || type.equals(long.class)) {
+                    return Long.parseLong(strValue);
+                } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
+                    return Boolean.parseBoolean(strValue);
+                } else if (type.equals(Short.class) || type.equals(short.class)) {
+                    return Short.parseShort(strValue);
+                } else if (type.equals(Byte.class) || type.equals(byte.class)) {
+                    return Byte.parseByte(strValue);
+                }
+            } else if (value instanceof JSONObject) {
+                return JSONObject.parseObject(String.valueOf(value), type);
             }
-        }
 
-        return value;
+            return value;
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("can not transfer value=%s to type=%s", value, type), e);
+        }
     }
 
     @SneakyThrows

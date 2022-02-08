@@ -21,7 +21,7 @@ public class TestController {
 
 
     @POST("/print")
-    public String print(@PARAM("name") String name, @PARAM("age") String age) {
+    public String print(@PARAM("name") String name, @PARAM("age") Integer age) {
         return "hi:" + name + ",age:" + age;
     }
 
@@ -43,6 +43,20 @@ public class TestController {
 
     @Data
     public static class PrintReq {
+        private String name;
+        private Integer age;
+        private EmbedPrintReq embed;
+    }
+
+    @Data
+    public static class EmbedPrintReq {
+        private String name;
+        private Integer age;
+        private EmbedPrintReq2 embed2;
+    }
+
+    @Data
+    public static class EmbedPrintReq2 {
         private String name;
         private Integer age;
     }
