@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface POST {
 
-    String[] path() default {};
+    String[] value() default {};
 
 }

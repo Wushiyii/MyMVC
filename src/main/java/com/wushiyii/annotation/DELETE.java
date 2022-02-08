@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DELETE {
 
-    String[] path() default {};
+    String[] value() default {};
 
 
 }

@@ -91,25 +91,20 @@ public class ParamUtils {
         ServletRequestContext servletRequestContext = new ServletRequestContext(request);
         String uploadPath = request.getServletContext().getRealPath("./") + File.separator + UPLOAD_DIRECTORY;
 
-        // 如果目录不存在则创建
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
-
         try {
             List<FileItem> formItems = uploader.parseRequest(servletRequestContext);
 
             if (formItems != null && formItems.size() > 0) {
-                // 迭代表单数据
+
                 for (FileItem item : formItems) {
-                    // 处理不在表单中的字段
+                    // 文件类型处理
                     if (!item.isFormField()) {
                         String fileName = new File(item.getName()).getName();
                         String filePath = uploadPath + File.separator + fileName;
                         File storeFile = new File(filePath);
-                        // 在控制台输出文件的上传路径
                         paramMap.put(item.getFieldName(), storeFile);
+                    } else {
+                        paramMap.put(item.getFieldName(), item.getString());
                     }
                 }
             }

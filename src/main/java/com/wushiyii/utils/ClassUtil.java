@@ -1,14 +1,17 @@
 package com.wushiyii.utils;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -115,26 +118,7 @@ public final class ClassUtil {
             if (Objects.isNull(value)) {
                 return generateDefaultObject(type);
             }
-            String strValue = (String) value;
-
-            if (type.equals(int.class) || type.equals(Integer.class)) {
-                return Integer.parseInt(strValue);
-            } else if (type.equals(String.class)) {
-                return strValue;
-            } else if (type.equals(Double.class) || type.equals(double.class)) {
-                return Double.parseDouble(strValue);
-            } else if (type.equals(Float.class) || type.equals(float.class)) {
-                return Float.parseFloat(strValue);
-            } else if (type.equals(Long.class) || type.equals(long.class)) {
-                return Long.parseLong(strValue);
-            } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
-                return Boolean.parseBoolean(strValue);
-            } else if (type.equals(Short.class) || type.equals(short.class)) {
-                return Short.parseShort(strValue);
-            } else if (type.equals(Byte.class) || type.equals(byte.class)) {
-                return Byte.parseByte(strValue);
-            }
-            return value;
+            return getTypeMatchedObject(type, value);
 
         } else if (isFile(type)) {
             return value;
@@ -190,5 +174,52 @@ public final class ClassUtil {
 
     public static boolean isFile(Class<?> type) {
         return type == File.class;
+    }
+
+
+    private static Object getTypeMatchedObject(Class<?> type, Object value) {
+        if (isPrimitive(type)) {
+            String strValue = (String) value;
+
+            if (type.equals(int.class) || type.equals(Integer.class)) {
+                return Integer.parseInt(strValue);
+            } else if (type.equals(String.class)) {
+                return strValue;
+            } else if (type.equals(Double.class) || type.equals(double.class)) {
+                return Double.parseDouble(strValue);
+            } else if (type.equals(Float.class) || type.equals(float.class)) {
+                return Float.parseFloat(strValue);
+            } else if (type.equals(Long.class) || type.equals(long.class)) {
+                return Long.parseLong(strValue);
+            } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
+                return Boolean.parseBoolean(strValue);
+            } else if (type.equals(Short.class) || type.equals(short.class)) {
+                return Short.parseShort(strValue);
+            } else if (type.equals(Byte.class) || type.equals(byte.class)) {
+                return Byte.parseByte(strValue);
+            }
+        }
+
+        return value;
+    }
+
+    @SneakyThrows
+    public static Object generateBodyObject(Class<?> type, Map<String, Object> requestMap) {
+        Object object = type.newInstance();
+
+        Field[] fields = object.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            if (requestMap.containsKey(field.getName())) {
+                setFiled(field, object, requestMap.get(field.getName()));
+            }
+        }
+        return object;
+    }
+
+    @SneakyThrows
+    private static void setFiled(Field field, Object object, Object value) {
+
+        field.setAccessible(true);
+        field.set(object, getTypeMatchedObject(field.getType(), value));
     }
 }

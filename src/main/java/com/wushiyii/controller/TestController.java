@@ -1,8 +1,10 @@
 package com.wushiyii.controller;
 
+import com.wushiyii.annotation.BODY;
 import com.wushiyii.annotation.GET;
 import com.wushiyii.annotation.POST;
-import com.wushiyii.annotation.Param;
+import com.wushiyii.annotation.PARAM;
+import lombok.Data;
 
 import java.io.File;
 
@@ -12,19 +14,42 @@ import java.io.File;
  */
 public class TestController {
 
-    @GET(path = {"/hello", "/hello2"})
-    public String hello(@Param("name") String name, @Param("age") String age) {
+    @GET({"/hello", "/hello2"})
+    public String hello(@PARAM("name") String name, @PARAM("age") String age) {
         return "hi:" + name + ",age:" + age;
     }
 
 
-    @POST(path = {"/print"})
-    public String print(@Param("name") String name, @Param("age") String age) {
+    @POST("/print")
+    public String print(@PARAM("name") String name, @PARAM("age") String age) {
         return "hi:" + name + ",age:" + age;
     }
 
-    @POST(path = "/uploadFile")
-    public String uploadFile(@Param("file") File file) {
-        return "file :" + file.getName();
+    @POST("/print2")
+    public String print2(@BODY PrintReq req) {
+        return "hi:" + req.getName() + ",age:" + req.getAge();
+    }
+
+    @POST("/uploadFile")
+    public String uploadFile(@PARAM("file") File file, @PARAM("hello") String hello) {
+        return "hello:" + hello + ", file :" + file.getName();
+    }
+
+    @POST("/uploadFile2")
+    public String uploadFile2(@BODY UploadReq req) {
+        return "hello:" + req.getHello() + ", file :" + req.getFile().getName();
+    }
+
+
+    @Data
+    public static class PrintReq {
+        private String name;
+        private Integer age;
+    }
+
+    @Data
+    public static class UploadReq {
+        private File file;
+        private String hello;
     }
 }

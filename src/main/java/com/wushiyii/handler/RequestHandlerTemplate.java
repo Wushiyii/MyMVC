@@ -20,7 +20,7 @@ public class RequestHandlerTemplate {
             //获取处理器
             RequestHandler handler = RequestHandlerFactory.getHandler(req.getMethod());
 
-            //建立上线文
+            //建立上下文
             RequestContext context = RequestContext.builder().req(req).resp(resp).build();
 
             //预处理

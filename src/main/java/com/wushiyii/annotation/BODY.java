@@ -7,11 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * @Author: wgq
- * @Date: 2022/1/22 14:47
+ * @Date: 2022/2/8 11:48
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GET {
+public @interface BODY {
 
-    String[] value() default {};
 }

@@ -1,10 +1,12 @@
 package com.wushiyii.dispatch;
 
-import com.wushiyii.annotation.Param;
+import com.wushiyii.annotation.BODY;
+import com.wushiyii.annotation.PARAM;
 import com.wushiyii.utils.ClassUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
@@ -14,6 +16,9 @@ import java.util.*;
  */
 @Slf4j
 public class EndpointExecutor {
+
+
+    private static final Set<String> OK_METHOD_SET = new HashSet<>();
 
 
     @SneakyThrows
@@ -40,14 +45,19 @@ public class EndpointExecutor {
         Class<?>[] parameterTypes = endpoint.getMethod().getParameterTypes();
         List<Object> objectList = new ArrayList<>();
 
+        checkRequestType(endpoint.getMethod());
+
         for (int i = 0; i < parameters.length; i++) {
             Parameter param = parameters[i];
             Class<?> type = parameterTypes[i];
 
-            Param pinedParam = param.getAnnotation(Param.class);
+            PARAM pinedParam = param.getAnnotation(PARAM.class);
+            BODY pinedBody = param.getAnnotation(BODY.class);
 
-            if (requestMap.containsKey(pinedParam.value())) {
+            if (Objects.nonNull(pinedParam) && requestMap.containsKey(pinedParam.value())) {
                 objectList.add(ClassUtil.generateParameterObject(type, requestMap.get(pinedParam.value())));
+            } else if (Objects.nonNull(pinedBody)) {
+                objectList.add(ClassUtil.generateBodyObject(type, requestMap));
             } else {
                 objectList.add(ClassUtil.generateDefaultObject(type));
             }
@@ -55,5 +65,27 @@ public class EndpointExecutor {
 
 
         return objectList;
+    }
+
+    private static void checkRequestType(Method method) {
+        if (OK_METHOD_SET.contains(method.toString())) {
+            return;
+        }
+
+        Parameter[] parameters = method.getParameters();
+
+        //接收入参的@BODY 注解只能同时用一个
+        int bodyAnnotationCount = 0;
+        for (Parameter parameter : parameters) {
+            BODY body = parameter.getAnnotation(BODY.class);
+            if (Objects.nonNull(body)) {
+                bodyAnnotationCount++;
+            }
+        }
+        if (bodyAnnotationCount > 1) {
+            throw new RuntimeException(String.format("method: %s can not pined two @BODY annotation", method.getName()));
+        }
+
+        OK_METHOD_SET.add(method.toString());
     }
 }

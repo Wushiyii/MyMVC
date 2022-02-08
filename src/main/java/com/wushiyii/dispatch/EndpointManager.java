@@ -29,16 +29,16 @@ public class EndpointManager {
         String[] multiPath = {};
         String method = "";
         if (declaredMethod.isAnnotationPresent(GET.class)) {
-            multiPath = declaredMethod.getAnnotation(GET.class).path();
+            multiPath = declaredMethod.getAnnotation(GET.class).value();
             method = Constants.GET;
         } else if (declaredMethod.isAnnotationPresent(POST.class)) {
-            multiPath = declaredMethod.getAnnotation(POST.class).path();
+            multiPath = declaredMethod.getAnnotation(POST.class).value();
             method = Constants.POST;
         } else if (declaredMethod.isAnnotationPresent(DELETE.class)) {
-            multiPath = declaredMethod.getAnnotation(DELETE.class).path();
+            multiPath = declaredMethod.getAnnotation(DELETE.class).value();
             method = Constants.DELETE;
         } else if (declaredMethod.isAnnotationPresent(PUT.class)) {
-            multiPath = declaredMethod.getAnnotation(PUT.class).path();
+            multiPath = declaredMethod.getAnnotation(PUT.class).value();
             method = Constants.PUT;
         }
 
