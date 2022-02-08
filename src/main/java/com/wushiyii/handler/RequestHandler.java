@@ -5,6 +5,7 @@ import com.wushiyii.dispatch.EndpointExecutor;
 import com.wushiyii.dispatch.EndpointManager;
 import com.wushiyii.dispatch.EndpointMetaInfo;
 import com.wushiyii.utils.ParamUtils;
+import com.wushiyii.utils.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,10 +27,7 @@ public interface RequestHandler {
         HttpServletRequest req = context.getReq();
         req.setCharacterEncoding("UTF-8");
 
-        String reqPath = req.getPathInfo();
-        if (reqPath.endsWith("/")) {
-            reqPath = reqPath.substring(0, reqPath.length() - 1);
-        }
+        String reqPath = StringUtils.trimSlash(req.getPathInfo());
 
         context.setMethod(req.getMethod());
         context.setPath(reqPath);

@@ -119,11 +119,32 @@ public final class ClassUtil {
             if (Objects.isNull(value)) {
                 return generateDefaultObject(type);
             }
-            return getTypeMatchedObject(type, value);
+            String strValue = (String) value;
+
+            if (type.equals(int.class) || type.equals(Integer.class)) {
+                return Integer.parseInt(strValue);
+            } else if (type.equals(String.class)) {
+                return strValue;
+            } else if (type.equals(Double.class) || type.equals(double.class)) {
+                return Double.parseDouble(strValue);
+            } else if (type.equals(Float.class) || type.equals(float.class)) {
+                return Float.parseFloat(strValue);
+            } else if (type.equals(Long.class) || type.equals(long.class)) {
+                return Long.parseLong(strValue);
+            } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
+                return Boolean.parseBoolean(strValue);
+            } else if (type.equals(Short.class) || type.equals(short.class)) {
+                return Short.parseShort(strValue);
+            } else if (type.equals(Byte.class) || type.equals(byte.class)) {
+                return Byte.parseByte(strValue);
+            }
+            return value;
 
         } else if (isFile(type)) {
             return value;
-        } else {
+        } else if (value instanceof JSONObject) {
+            return JSONObject.parseObject(String.valueOf(value), type);
+        }else {
             throw new RuntimeException("不支持的解析映射类型, type=" + type + ",value=" + value);
         }
     }
@@ -177,39 +198,6 @@ public final class ClassUtil {
         return type == File.class;
     }
 
-
-    private static Object getTypeMatchedObject(Class<?> type, Object value) {
-        try {
-            if (isPrimitive(type)) {
-                String strValue = (String) value;
-
-                if (type.equals(int.class) || type.equals(Integer.class)) {
-                    return Integer.parseInt(strValue);
-                } else if (type.equals(String.class)) {
-                    return strValue;
-                } else if (type.equals(Double.class) || type.equals(double.class)) {
-                    return Double.parseDouble(strValue);
-                } else if (type.equals(Float.class) || type.equals(float.class)) {
-                    return Float.parseFloat(strValue);
-                } else if (type.equals(Long.class) || type.equals(long.class)) {
-                    return Long.parseLong(strValue);
-                } else if (type.equals(Boolean.class) || type.equals(boolean.class)) {
-                    return Boolean.parseBoolean(strValue);
-                } else if (type.equals(Short.class) || type.equals(short.class)) {
-                    return Short.parseShort(strValue);
-                } else if (type.equals(Byte.class) || type.equals(byte.class)) {
-                    return Byte.parseByte(strValue);
-                }
-            } else if (value instanceof JSONObject) {
-                return JSONObject.parseObject(String.valueOf(value), type);
-            }
-
-            return value;
-        } catch (Exception e) {
-            throw new RuntimeException(String.format("can not transfer value=%s to type=%s", value, type), e);
-        }
-    }
-
     @SneakyThrows
     public static Object generateBodyObject(Class<?> type, Map<String, Object> requestMap) {
         Object object = type.newInstance();
@@ -227,6 +215,6 @@ public final class ClassUtil {
     private static void setFiled(Field field, Object object, Object value) {
 
         field.setAccessible(true);
-        field.set(object, getTypeMatchedObject(field.getType(), value));
+        field.set(object, generateParameterObject(field.getType(), value));
     }
 }

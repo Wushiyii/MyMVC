@@ -7,6 +7,7 @@ import com.wushiyii.annotation.GET;
 import com.wushiyii.annotation.POST;
 import com.wushiyii.annotation.PUT;
 import com.wushiyii.dto.Constants;
+import com.wushiyii.utils.StringUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +44,7 @@ public class EndpointManager {
         }
 
         for (String path : multiPath) {
+            path = StringUtils.trimSlash(path);
             EndpointMetaInfo metaInfo = EndpointMetaInfo.builder()
                     .path(path)
                     .endpointObject(clazz.newInstance())

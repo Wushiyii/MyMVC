@@ -17,8 +17,6 @@ public class MyMVCConfiguration {
 
     private static String basePackage;
 
-    private static Class<?> startClass;
-
     public static int getPort() {
         return port;
     }
@@ -57,12 +55,7 @@ public class MyMVCConfiguration {
         MyMVCConfiguration.basePackage = basePackage;
     }
 
-    public static Class<?> getStartClass() {
-        return startClass;
-    }
-
     public static void setStartClass(Class<?> startClass) {
-        MyMVCConfiguration.startClass = startClass;
         MyMVCConfiguration.setBasePackage(startClass.getPackage().getName());
     }
 }
