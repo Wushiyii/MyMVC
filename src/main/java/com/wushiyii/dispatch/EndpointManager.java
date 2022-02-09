@@ -43,11 +43,12 @@ public class EndpointManager {
             method = Constants.PUT;
         }
 
+        Object endPointObject = clazz.newInstance();
         for (String path : multiPath) {
             path = StringUtils.trimSlash(path);
             EndpointMetaInfo metaInfo = EndpointMetaInfo.builder()
                     .path(path)
-                    .endpointObject(clazz.newInstance())
+                    .endpointObject(endPointObject)
                     .method(declaredMethod)
                     .build();
             register0(method, path, metaInfo);

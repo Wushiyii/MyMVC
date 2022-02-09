@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Author: wgq
@@ -63,9 +64,11 @@ public interface RequestHandler {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
-        PrintWriter writer = resp.getWriter();
-        writer.write(JSON.toJSONString(context.getOriginResult()));
-        writer.flush();
+        if (Objects.nonNull(context.getOriginResult())) {
+            PrintWriter writer = resp.getWriter();
+            writer.write(JSON.toJSONString(context.getOriginResult()));
+            writer.flush();
+        }
     }
 
 }

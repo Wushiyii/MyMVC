@@ -2,13 +2,8 @@ package com.wushiyii.builder;
 
 import com.wushiyii.config.MyMVCConfiguration;
 import com.wushiyii.server.MyEmbedServer;
-import lombok.Getter;
 
-/**
- * @Author: wgq
- * @Date: 2022/1/24 11:26
- */
-@Getter
+
 public class MyMVCBuilder {
 
     public static MyMVCBuilder of() {

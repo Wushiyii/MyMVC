@@ -44,7 +44,7 @@ public class MyEmbedServer implements EmbedServer {
             standardContext.addServletMappingDecoded("/*", "myMVCServlet");
 
         } catch (Exception e) {
-            log.error("初始化 Tomcat 失败", e);
+            log.error("[MyMVC] Init Tomcat Server failed ", e);
             throw new RuntimeException(e);
         }
 
@@ -57,7 +57,7 @@ public class MyEmbedServer implements EmbedServer {
     @Override
     public void start() {
         this.tomcat.start();
-        log.info("Tomcat start success, address: http://{}:{}", this.tomcat.getServer().getAddress(), this.tomcat.getServer().getPort());
+        log.info("[MyMVC] start success, address: http://{}:{}", this.tomcat.getServer().getAddress(), this.tomcat.getServer().getPort());
         this.tomcat.getServer().await();
     }
 
