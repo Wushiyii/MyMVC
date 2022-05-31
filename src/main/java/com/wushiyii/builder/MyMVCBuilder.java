@@ -6,7 +6,7 @@ import com.wushiyii.server.MyEmbedServer;
 
 public class MyMVCBuilder {
 
-    public static MyMVCBuilder of() {
+    public static MyMVCBuilder builder() {
         return new MyMVCBuilder();
     }
 

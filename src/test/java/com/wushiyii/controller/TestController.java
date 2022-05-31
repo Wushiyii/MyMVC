@@ -1,9 +1,6 @@
 package com.wushiyii.controller;
 
-import com.wushiyii.annotation.BODY;
-import com.wushiyii.annotation.GET;
-import com.wushiyii.annotation.PARAM;
-import com.wushiyii.annotation.POST;
+import com.wushiyii.annotation.*;
 import lombok.Data;
 
 import java.io.File;
@@ -12,6 +9,7 @@ import java.io.File;
  * @Author: wgq
  * @Date: 2022/2/8 15:09
  */
+@MyController("test")
 public class TestController {
 
     @GET({"hello", "hello2"})

@@ -7,8 +7,12 @@ package com.wushiyii.utils;
 public class StringUtils {
 
     public static String trimSlash(String str) {
-        if (str.startsWith("/")) {
-            str = str.substring(1);
+        if (isEmtpy(str)) {
+            return str;
+        }
+        str = str.trim();
+        if (!str.startsWith("/")) {
+            str = "/" + str;
         }
         if (str.endsWith("/")) {
             str = str.substring(0, str.length() - 1);
@@ -16,5 +20,12 @@ public class StringUtils {
         return str;
     }
 
+    public static boolean isEmtpy(String str) {
+        return null == str || "".equals(str);
+    }
+
+    public static boolean isNotEmpty(String str) {
+        return !isEmtpy(str);
+    }
 
 }

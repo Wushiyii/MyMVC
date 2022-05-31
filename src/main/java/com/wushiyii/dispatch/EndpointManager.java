@@ -26,7 +26,7 @@ public class EndpointManager {
 
     // 不用考虑并发场景，只有启动时for循环注册一次
     @SneakyThrows
-    public static void register(Class<?> clazz, Method declaredMethod) {
+    public static void register(Class<?> clazz, String parentPath, Method declaredMethod) {
         String[] multiPath = {};
         String method = "";
         if (declaredMethod.isAnnotationPresent(GET.class)) {
@@ -45,7 +45,7 @@ public class EndpointManager {
 
         Object endPointObject = clazz.newInstance();
         for (String path : multiPath) {
-            path = StringUtils.trimSlash(path);
+            path = StringUtils.trimSlash(parentPath) + StringUtils.trimSlash(path);
             EndpointMetaInfo metaInfo = EndpointMetaInfo.builder()
                     .path(path)
                     .endpointObject(endPointObject)

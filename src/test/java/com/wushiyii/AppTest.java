@@ -13,6 +13,6 @@ public class AppTest
 
     @Test
     public void start() {
-        MyMVCBuilder.of().start(App.class);
+        MyMVCBuilder.builder().start(AppTest.class);
     }
 }
