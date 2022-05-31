@@ -13,6 +13,6 @@ public class AppTest
 
     @Test
     public void start() {
-        MyMVCBuilder.builder().start(AppTest.class);
+        MyMVCBuilder.builder().port(7400).contextPath("/mvc").start(AppTest.class);
     }
 }

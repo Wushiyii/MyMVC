@@ -1,5 +1,6 @@
 package com.wushiyii.server;
 
+import com.wushiyii.config.MyMVCConfiguration;
 import com.wushiyii.servlet.MyMVCServlet;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.StandardRoot;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 
@@ -57,7 +59,7 @@ public class MyEmbedServer implements EmbedServer {
     @Override
     public void start() {
         this.tomcat.start();
-        log.info("[MyMVC] start success, address: http://{}:{}", this.tomcat.getServer().getAddress(), this.tomcat.getServer().getPort());
+        log.info("[MyMVC] start success, address: http://{}:{}", InetAddress.getLocalHost().getHostAddress(), MyMVCConfiguration.getPort());
         this.tomcat.getServer().await();
     }
 
