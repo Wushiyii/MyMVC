@@ -19,8 +19,8 @@ public class RequestHandlerFactory {
     private static final Map<String, RequestHandler> HANDLER_MAP = new HashMap<String, RequestHandler>(){{
         put(Constants.GET, new GetRequestHandler());
         put(Constants.POST, new PostRequestHandler());
-        put(Constants.PUT, new PutRequestHandler());
-        put(Constants.DELETE, new DeleteRequestHandler());
+        put(Constants.PUT, new PostRequestHandler());
+        put(Constants.DELETE, new PostRequestHandler());
     }};
 
 

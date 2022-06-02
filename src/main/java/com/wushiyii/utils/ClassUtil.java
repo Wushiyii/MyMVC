@@ -119,7 +119,7 @@ public final class ClassUtil {
             if (Objects.isNull(value)) {
                 return generateDefaultObject(type);
             }
-            String strValue = (String) value;
+            String strValue = String.valueOf(value);
 
             if (type.equals(int.class) || type.equals(Integer.class)) {
                 return Integer.parseInt(strValue);

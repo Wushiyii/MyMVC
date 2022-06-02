@@ -38,6 +38,12 @@ public class TestController {
         return req;
     }
 
+    @PUT("updateUser")
+    public UserDTO updateUser(@BODY UserDTO req) {
+
+        return req;
+    }
+
 
     @Data
     public static class PrintReq {
@@ -63,5 +69,12 @@ public class TestController {
     public static class UploadReq {
         private File file;
         private String hello;
+    }
+
+    @Data
+    public static class UserDTO {
+        private Long id;
+        private String name;
+        private Integer age;
     }
 }
